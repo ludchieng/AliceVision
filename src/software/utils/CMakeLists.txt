@@ -225,4 +225,21 @@ alicevision_add_software(aliceVision_utils_fisheyeProjection
         ${Boost_LIBRARIES}
 )
 
+
+# Perform color chart detection
+alicevision_add_software(aliceVision_utils_colorCheckerDetection
+  SOURCE main_colorCheckerDetection.cpp
+  FOLDER ${FOLDER_SOFTWARE_UTILS}
+  LINKS aliceVision_system
+        aliceVision_numeric
+        aliceVision_image
+        ${OPENIMAGEIO_LIBRARIES}
+        Boost::program_options
+        Boost::filesystem
+)
+
+if(ALICEVISION_HAVE_OPENCV)
+  target_link_libraries(aliceVision_utils_colorCheckerDetection PRIVATE ${OpenCV_LIBS})
+endif()
+
 endif() # ALICEVISION_BUILD_SFM
