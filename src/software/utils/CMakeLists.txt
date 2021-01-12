@@ -227,18 +227,19 @@ alicevision_add_software(aliceVision_utils_fisheyeProjection
 
 
 # Perform color chart detection
-alicevision_add_software(aliceVision_utils_colorCheckerDetection
-  SOURCE main_colorCheckerDetection.cpp
-  FOLDER ${FOLDER_SOFTWARE_UTILS}
-  LINKS aliceVision_system
-        aliceVision_sfmData
-        aliceVision_sfmDataIO
-        Boost::program_options
-        Boost::filesystem
-)
-
 if(ALICEVISION_HAVE_OPENCV)
-  target_link_libraries(aliceVision_utils_colorCheckerDetection PRIVATE ${OpenCV_LIBS})
+  alicevision_add_software(aliceVision_utils_colorCheckerDetection
+    SOURCE main_colorCheckerDetection.cpp
+    FOLDER ${FOLDER_SOFTWARE_UTILS}
+    LINKS aliceVision_system
+          aliceVision_sfmData
+          aliceVision_sfmDataIO
+          Boost::program_options
+          Boost::filesystem
+          ${OpenCV_LIBS} # opencv_core  opencv_imgproc  opencv_video  opencv_imgcodecs  opencv_videoio  opencv_features2d  opencv_xfeatures2d
+          opencv_mcc
+          opencv_highgui
+)
 endif()
 
 # Lighting estimation from picture, albedo and geometry
