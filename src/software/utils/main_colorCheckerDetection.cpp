@@ -1,5 +1,5 @@
 // This file is part of the AliceVision project.
-// Copyright (c) 2017 AliceVision contributors.
+// Copyright (c) 2021 AliceVision contributors.
 // This Source Code Form is subject to the terms of the Mozilla Public License,
 // v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -147,58 +147,6 @@ void serializeColorMatrixToTextFile(const std::string &outputColorData, cv::Mat 
     f.close();
 }
 
-
-// TODO refactor with imageProcessing
-cv::Mat imageRGBAToCvMatBGRi(const image::Image<image::RGBAfColor>& img)
-{
-    cv::Mat mat(img.Height(), img.Width(), CV_8UC3);
-    for(int row = 0; row < img.Height(); row++)
-    {
-        for(int col = 0; col < img.Width(); col++)
-        {
-            mat.at<cv::Vec3b>(row, col)[0] = (uint8_t) (img(row, col).b() * 256);
-            mat.at<cv::Vec3b>(row, col)[1] = (uint8_t) (img(row, col).g() * 256);
-            mat.at<cv::Vec3b>(row, col)[2] = (uint8_t) (img(row, col).r() * 256);
-        }
-    }
-    return mat;
-}
-
-
-
-// TODO refactor with imageProcessing
-cv::Mat imageRGBAToCvMatBGRf(const image::Image<image::RGBAfColor>& img)
-{
-    cv::Mat mat(img.Height(), img.Width(), CV_32FC3);
-    for(int row = 0; row < img.Height(); row++)
-    {
-        cv::Vec3f* rowPtr = mat.ptr<cv::Vec3f>(row);
-        for(int col = 0; col < img.Width(); col++)
-        {
-            cv::Vec3f& matPixel = rowPtr[col];
-            const image::RGBAfColor& imgPixel = img(row, col);
-            matPixel = cv::Vec3f(imgPixel.b(), imgPixel.g(), imgPixel.r());
-        }
-    }
-    return mat;
-}
-
-
-// TODO refactor with imageProcessing
-void cvMatBGRToImageRGBA(const cv::Mat& matIn, image::Image<image::RGBAfColor>& imageOut)
-{
-    for(int row = 0; row < imageOut.Height(); row++)
-    {
-        const cv::Vec3f* rowPtr = matIn.ptr<cv::Vec3f>(row);
-        for(int col = 0; col < imageOut.Width(); col++)
-        {
-            const cv::Vec3f& matPixel = rowPtr[col];
-            imageOut(row, col) = image::RGBAfColor(matPixel[2], matPixel[1], matPixel[0], imageOut(row, col).a());
-        }
-    }
-}
-
-
 void detectColorChecker(
     const fs::path &imgPath,
     const image::ImageReadOptions &imgReadOptions,
@@ -215,7 +163,7 @@ void detectColorChecker(
     // Load image
     image::Image<image::RGBAfColor> image;
     image::readImage(imgSrcPath, image, imgReadOptions);
-    cv::Mat imageBGR = imageRGBAToCvMatBGRi(image);
+    cv::Mat imageBGR = imageRGBAToCvMatBGR(image, CV_8UC3);
 
     if(imageBGR.cols == 0 || imageBGR.rows == 0)
     {
@@ -269,7 +217,7 @@ int aliceVision_main(int argc, char** argv)
     bool debug = false;
 
     po::options_description allParams(
-        "This program is used to perform color checker detection\n"
+        "This program is used to perform Macbeth color checker chart detection.\n"
         "AliceVision colorCheckerDetection");
 
     po::options_description inputParams("Required parameters");
