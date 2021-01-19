@@ -128,7 +128,8 @@ namespace ccheckerSVG {
     }
 } // namespace ccheckerSVG
 
-void serializeColorMatrixToTextFile(const std::string &outputColorData, cv::Mat &colorData)
+
+void serializeColorDataToTextFile(const std::string &outputColorData, cv::Mat &colorData)
 {
     std::ofstream f;
     f.open(outputColorData);
@@ -197,11 +198,14 @@ void detectColorChecker(
         // Get colors data
         cv::Mat chartsRGB = checker->getChartsRGB();
 
+        if (compare(checker, bestCChecker))
+            bestCChecker = checker;
+
         // Extract average colors
         cv::Mat colorData = chartsRGB.col(1).clone().reshape(3, chartsRGB.rows / 3);
         colorData /= 255.0; // conversion to float
 
-        serializeColorMatrixToTextFile(outputColorData, colorData);
+        serializeColorDataToTextFile(outputFolder + "/colorData_" + imgDestStem, colorData);
     }
 }
 

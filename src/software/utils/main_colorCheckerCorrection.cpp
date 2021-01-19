@@ -79,7 +79,7 @@ std::string type2str(int type)
     return r;
 }
 
-cv::Mat deserializeColorMatrixFromTextFile(const std::string &colorData) {
+cv::Mat deserializeColorDataFromTextFile(const std::string &colorData) {
     int rows = 24;
     int cols = 1;
     cv::Mat out = cv::Mat::zeros(rows, cols, CV_64FC3); // Matrix to store values
@@ -188,7 +188,7 @@ int aliceVision_main(int argc, char** argv)
     }
 
     // Get color data matrix from text file input 
-    cv::Mat colorDataMat = deserializeColorMatrixFromTextFile(colorData);
+    cv::Mat colorDataMat = deserializeColorDataFromTextFile(colorData);
 
     // Map used to store paths of the views that need to be processed
     std::unordered_map<IndexT, std::string> ViewPaths;
