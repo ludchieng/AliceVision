@@ -127,6 +127,24 @@ namespace ccheckerSVG {
     }
 } // namespace ccheckerSVG
 
+void serializeColorMatrixToTextFile(const std::string &outputColorData, cv::Mat &colorData)
+{
+    std::ofstream f;
+    f.open(outputColorData);
+    for(int row = 0; row < colorData.rows; row++)
+    {
+        cv::Vec3d* rowPtr = colorData.ptr<cv::Vec3d>(row); // pointer which points to the first place of each row
+        for(int col = 0; col < colorData.cols; col++)
+        {
+            const cv::Vec3d& matPixel = rowPtr[col];
+            for(unsigned int i = 0; i < 3; ++i)
+            {
+                f << std::setprecision(std::numeric_limits<double>::digits10 + 2) << matPixel[i] << std::endl;
+            }
+        }
+    }
+    f.close();
+}
 
 void detectColorChecker(
     const fs::path &imgPath,
@@ -159,6 +177,8 @@ void detectColorChecker(
 
     ALICEVISION_LOG_INFO("Checker successfully detected in '" << imgSrcStem << "'");
 
+    std::cout << "Image size:" << image.cols * image.rows << std::endl;
+
     for(cv::Ptr<cv::mcc::CChecker> checker : detector->getListColorChecker())
     {
         if(debug)
@@ -179,10 +199,7 @@ void detectColorChecker(
         cv::Mat colorData = chartsRGB.col(1).clone().reshape(3, chartsRGB.rows / 3);
         colorData /= 255.0; // conversion to float
 
-        std::ofstream f;
-        f.open(outputColorData);
-        f << colorData << std::endl;
-        f.close();
+        serializeColorMatrixToTextFile(outputColorData, colorData);
     }
 }
 
