@@ -164,7 +164,7 @@ void detectColorChecker(
     // Load image
     image::Image<image::RGBAfColor> image;
     image::readImage(imgSrcPath, image, imgReadOptions);
-    cv::Mat imageBGR = imageRGBAToCvMatBGR(image, CV_8UC3);
+    cv::Mat imageBGR = image::imageRGBAToCvMatBGR(image, CV_8UC3);
 
     if(imageBGR.cols == 0 || imageBGR.rows == 0)
     {
@@ -197,9 +197,6 @@ void detectColorChecker(
 
         // Get colors data
         cv::Mat chartsRGB = checker->getChartsRGB();
-
-        if (compare(checker, bestCChecker))
-            bestCChecker = checker;
 
         // Extract average colors
         cv::Mat colorData = chartsRGB.col(1).clone().reshape(3, chartsRGB.rows / 3);
