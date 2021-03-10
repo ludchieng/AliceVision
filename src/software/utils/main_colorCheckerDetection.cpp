@@ -207,7 +207,7 @@ struct Quad
         }
     }
 
-    void transform(cv::Matx33f transformMatrix)
+    void transform(const cv::Matx33f& transformMatrix)
     {
         for (auto &c : _corners)
         {
