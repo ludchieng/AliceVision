@@ -80,7 +80,7 @@ struct QuadSVG
         yCoords.push_back(points[0].y);
     }
 
-    void transform(cv::Matx33f transformMatrix)
+    void transform(const cv::Matx33f& transformMatrix)
     {
         for (int i = 0; i < 5; ++i)
         {
