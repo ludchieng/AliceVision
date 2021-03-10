@@ -92,7 +92,7 @@ struct QuadSVG
     }
 };
 
-void drawSVG(const cv::Ptr<cv::mcc::CChecker> &checker, std::string outputPath)
+void drawSVG(const cv::Ptr<cv::mcc::CChecker> &checker, const std::string& outputPath)
 {
     std::vector< QuadSVG > quadsToDraw;
 
