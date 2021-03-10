@@ -241,7 +241,7 @@ struct MacbethCCheckerQuad : Quad {
     MacbethCCheckerQuad(
         cv::Ptr<cv::mcc::CChecker> cchecker,
         const image::Image<image::RGBAfColor> &img,
-        ImageOptions imgOpt)
+        const ImageOptions& imgOpt)
         : Quad(cchecker->getBox())
         , _cchecker(cchecker)
         , _imgOpt(imgOpt)
